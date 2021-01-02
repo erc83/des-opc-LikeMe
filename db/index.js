@@ -24,8 +24,35 @@ async function newPost(postObject){
     }
 }
 
+async function updatePost(id){
+    const qryObject = {
+        text: 'UPDATE posts SET likes = likes + 1 WHERE id = $1 RETURNING *', 
+        values: [id]
+    }
+    try {
+        const result = await pool.query(qryObject)
+        return result.rows 
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+async function indexPost(){
+    const qryObject = {
+        text: 'SELECT * FROM posts'
+    }
+    try {
+        const result = await pool.query(qryObject)
+        return result.rows 
+    } catch (error) {
+        console.error(error)
+    }
+
+}
+
+
 module.exports = {
-    newPost
+    newPost, updatePost, indexPost
 }
 
 //newPost({usuario: 'Juan', URL: '#', descripcion:'hola soy juan'})   //para crear necesita este objeto
